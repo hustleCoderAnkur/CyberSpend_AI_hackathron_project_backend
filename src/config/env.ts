@@ -4,7 +4,7 @@ import { z } from "zod";
 const envSchema = z.object({
     DATABASE_URL: z.string().url(),
     PORT: z.coerce.number().int().positive().default(4000),
-    FASTAPI_URL: z.string().url(),
+    FASTAPI_URL: z.string().url().optional(),
     TINYFISH_API_KEY: z.string().min(1),
 
     JWT_ACCESS_TOKEN_SECRET: z.string().min(32),
