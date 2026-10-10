@@ -24,8 +24,27 @@ import { errorHandler } from "./middleware/error-handler.js";
 
 export const app = express();
 
+const allowedOrigins = [
+    "https://cyber-spend-ai-hackathron-project-f.vercel.app",
+    "http://localhost:3000",
+];
+
 app.use(helmet());
-app.use(cors());
+
+app.use(
+    cors({
+        origin: (origin, callback) => {
+            // Allow requests without an Origin header, e.g. health checks.
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error(`CORS blocked for origin: ${ origin } `));
+            }
+        },
+        credentials: true,
+    }),
+);
+
 app.use(express.json({ limit: "10mb" }));
 
 app.get("/api/health", (_req, res) => {
