@@ -10,6 +10,13 @@ export interface AssessmentResponse {
 export async function runAssessmentOnFastApi(
     datasetId: string,
 ): Promise<AssessmentResponse> {
+    if (!env.fastApiUrl) {
+        return {
+            success: false,
+            message: "Assessment service is not configured. Please configure FASTAPI_URL.",
+        };
+    }
+
     const url = `${env.fastApiUrl.replace(/\/+$/, "")}/process`;
 
     const response = await fetch(url, {
