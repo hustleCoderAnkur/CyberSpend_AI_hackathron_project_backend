@@ -146,6 +146,12 @@ export async function chatWithAssistant(
         webResearch = await searchTinyFish(input.message);
     }
 
+    if (!env.fastApiUrl) {
+        throw new Error(
+            "FASTAPI_URL is not configured. Assessment service is unavailable.",
+        );
+    }
+
     // This endpoint must match your FastAPI implementation.
     const response = await fetch(
         `${env.fastApiUrl.replace(/\/+$/, "")}/assistant/chat`,
